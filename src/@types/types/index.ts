@@ -1,7 +1,11 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
 
-export type RouteCallbackType = (req: Request, res: Response) => void;
+export type RouteCallbackType = (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => void;
 
 export type MovieType = {
   _id?: string;

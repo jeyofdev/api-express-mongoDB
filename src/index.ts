@@ -1,12 +1,14 @@
-import express from 'express';
+import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import routes from './routes/index.js';
 
 dotenv.config();
 
 // Config
 const PORT: Number = Number(process.env.PORT) || 4000;
 const app = express();
+app.use('/api', routes);
 
 // Connect MongoDb
 const connectOptions = { autoIndex: true };
@@ -16,11 +18,16 @@ mongoose
   .catch((err) => console.log(err));
 
 // Routes
-app.get('/', (req, res) => {
+app.get('/', (_: Request, res: Response) => {
   res.status(200).json({ message: 'Welcome to the API' });
+});
+
+// Route 404
+app.use((_: Request, res: Response) => {
+  res.status(404).send({ error: 'Route not found' });
 });
 
 // Listen
 app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
+  console.log(`Server is running on port ${PORT}`); // eslint-disable-line no-console
 });

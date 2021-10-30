@@ -63,3 +63,25 @@ export const findMovieById = async (req: Request, res: Response) => {
     });
   }
 };
+
+/**
+ * Update movie by Id
+ */
+export const updateMovieById = async (req: Request, res: Response) => {
+  await MovieModel.init();
+
+  try {
+    const { id } = req.params;
+    const movie = await MovieModel.findOneAndUpdate({ _id: id }, req.body);
+
+    if (!movie) {
+      return res.status(200).json({ message: 'No movie found !!!' });
+    }
+
+    return res.status(200).json({ result: movie });
+  } catch (err) {
+    return res.status(400).json({
+      error: (err as Error).message,
+    });
+  }
+};

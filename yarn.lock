@@ -198,7 +198,7 @@
 
 "@typescript-eslint/parser@^5.2.0":
   version "5.2.0"
-  resolved "https://registry.npmjs.org/@typescript-eslint/parser/-/parser-5.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.2.0.tgz#dc081aa89de16b5676b10215519af3aa7b58fb72"
   integrity sha512-Uyy4TjJBlh3NuA8/4yIQptyJb95Qz5PX//6p8n7zG0QnN4o3NF9Je3JHbVU7fxf5ncSXTmnvMtd/LDQWDk0YqA==
   dependencies:
     "@typescript-eslint/scope-manager" "5.2.0"

@@ -1,8 +1,10 @@
+import { Request, Response } from 'express';
 import argon2 from 'argon2';
 import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
 import {
   CalculateTokenType,
+  DecodeTokenType,
   HashPasswordType,
   VerifyPasswordType,
 } from '../@types/types';
@@ -38,3 +40,18 @@ export const verifyPassword: VerifyPasswordType = (
  */
 export const calculateToken: CalculateTokenType = (userEmail = '', userId) =>
   jwt.sign({ email: userEmail, id: userId }, `${process.env.PRIVATE_KEY}`);
+
+/**
+ * Get the informations from a jwt token
+ */
+export const decodeToken: DecodeTokenType = (token: string) =>
+  jwt.decode(token);
+
+/**
+ * Check if user is connected
+ */
+export const isConnected = (req: Request, res: Response) => {
+  if (!req.headers.cookie && !req.headers.authorization) {
+    res.status(401).json({ error: 'Unauthorized user' });
+  }
+};

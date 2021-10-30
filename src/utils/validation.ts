@@ -1,6 +1,9 @@
 import Joi, { PresenceMode } from 'joi';
 import { ValidationType } from '../@types/types';
 
+/**
+ * validation datas for movies
+ */
 export const movieValidation: ValidationType = (datas, forPost = true) => {
   const presence: PresenceMode = forPost ? 'required' : 'optional';
 
@@ -14,6 +17,9 @@ export const movieValidation: ValidationType = (datas, forPost = true) => {
   }).validate(datas, { abortEarly: false }).error;
 };
 
+/**
+ * validation datas for users
+ */
 export const userValidation: ValidationType = (datas, forPost = true) => {
   const presence: PresenceMode = forPost ? 'required' : 'optional';
 

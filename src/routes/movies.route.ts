@@ -1,8 +1,14 @@
 import express from 'express';
-import saveMovies from '../controllers/movies.controller.js';
+import {
+  saveMovies,
+  findAllMovies,
+  findMovieById,
+} from '../controllers/movies.controller.js';
 
 const router = express.Router();
 
 router.post('/', saveMovies);
+router.get('/', findAllMovies);
+router.get('/:id', findMovieById);
 
 export default router;

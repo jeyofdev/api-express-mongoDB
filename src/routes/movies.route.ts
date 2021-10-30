@@ -1,9 +1,8 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import saveMovies from '../controllers/movies.controller.js';
 
 const router = express.Router();
 
-router.get('/', (_: Request, res: Response) => {
-  res.status(200).json({ message: 'movies' });
-});
+router.post('/', saveMovies);
 
 export default router;

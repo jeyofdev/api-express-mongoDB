@@ -1,4 +1,6 @@
-import { model, Schema } from 'mongoose';
+import mongoose from 'mongoose';
+
+const { model, Schema } = mongoose;
 
 const movieSchema = new Schema({
   title: String,
@@ -9,6 +11,6 @@ const movieSchema = new Schema({
   type: String,
 });
 
-const MovieSchema = model('movie', movieSchema);
+const MovieModel = model('movie', movieSchema);
 
-export default MovieSchema;
+export default MovieModel;

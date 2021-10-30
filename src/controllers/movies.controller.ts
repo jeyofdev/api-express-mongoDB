@@ -1,5 +1,6 @@
 import { RouteCallbackType, MovieType } from '../@types/types/index.js';
 import MovieModel from '../models/movie.model.js';
+import movieValidation from '../utils/validation.js';
 
 /**
  * Post movie
@@ -8,14 +9,31 @@ export const saveMovies: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
+    let validationErrors: string | object | null | undefined = null;
+    validationErrors = movieValidation(req.body);
+
+    const movieExist: MovieType | null = await MovieModel.findOne({
+      title: req.body.title,
+    });
+
+    if (movieExist) {
+      return res
+        .status(409)
+        .json({ message: 'This movie is already in the database' });
+    }
+
+    if (validationErrors) {
+      return res.status(422).json({ validationErrors });
+    }
+
     const newMovie = new MovieModel(req.body);
     const result: MovieType = await newMovie.save();
 
-    res.status(201).json({
+    return res.status(201).json({
       result,
     });
   } catch (err) {
-    res.status(400).json({
+    return res.status(400).json({
       error: (err as Error).message,
     });
   }
@@ -28,7 +46,7 @@ export const findAllMovies: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
-    const movies: MovieType[] = await MovieModel.find();
+    const movies: MovieType[] = await MovieModel.find(req.query);
 
     if (movies.length < 1) {
       return res.status(200).json({ message: 'No movie found !!!' });
@@ -71,6 +89,13 @@ export const updateMovieById: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
+    let validationErrors: string | object | null | undefined = null;
+    validationErrors = movieValidation(req.body, false);
+
+    if (validationErrors) {
+      return res.status(422).json({ validationErrors });
+    }
+
     const { id } = req.params;
     const movie: MovieType | null = await MovieModel.findOne(
       { _id: id },

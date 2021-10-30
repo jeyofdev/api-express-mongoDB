@@ -17,6 +17,7 @@
     "src/routes/**/*",
     "src/models/**/*",
     "src/controllers/**/*",
-    "src/@types/**/*"
+    "src/@types/**/*",
+    "src/utils/**/*"
   ]
 }

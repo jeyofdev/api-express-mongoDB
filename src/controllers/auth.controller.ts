@@ -1,13 +1,17 @@
 import { RouteCallbackType, UserType } from '../@types/types/index.js';
 import UserModel from '../models/user.model.js';
-import hashPassword from '../utils/security.js';
+import {
+  hashPassword,
+  calculateToken,
+  verifyPassword,
+} from '../utils/security.js';
 import { userValidation } from '../utils/validation.js';
 
 /**
- * Post new user
+ * Signup
  */
-const signup: RouteCallbackType = async (req, res) => {
-  const { email, password } = req.body;
+export const signup: RouteCallbackType = async (req, res) => {
+  const { email, username, password } = req.body;
 
   let validationErrors: string | object | null | undefined = null;
 
@@ -25,7 +29,11 @@ const signup: RouteCallbackType = async (req, res) => {
       }
 
       return hashPassword(password).then((hashedPassword: string) => {
-        const newUser = new UserModel({ email, password: hashedPassword });
+        const newUser = new UserModel({
+          email,
+          username,
+          password: hashedPassword,
+        });
 
         return newUser
           .save()
@@ -52,4 +60,45 @@ const signup: RouteCallbackType = async (req, res) => {
     });
 };
 
-export default signup;
+/**
+ * Login
+ */
+export const login: RouteCallbackType = async (req, res) => {
+  const { email, password } = req.body;
+
+  await UserModel.init();
+
+  return UserModel.findOne({ email })
+    .then(async (user) => {
+      if (!user) {
+        return Promise.reject('INVALID_CREDENTIALS'); // eslint-disable-line prefer-promise-reject-errors
+      }
+
+      return verifyPassword(password, user.password)
+        .then((passwordIsCorrect) => {
+          if (!passwordIsCorrect) {
+            return Promise.reject('INVALID_CREDENTIALS'); // eslint-disable-line prefer-promise-reject-errors
+          }
+
+          const token = calculateToken(email, user.id);
+          res.cookie('userToken', token);
+
+          return res.status(200).json({
+            message: `The user ${user.username} is logged in`,
+            token: calculateToken(user.email, user.id),
+          });
+        })
+        .catch((err) => {
+          if (err === 'INVALID_CREDENTIALS') {
+            res.status(401).json({ message: 'Invalid credentials' });
+          }
+        });
+    })
+    .catch((err) => {
+      if (err === 'INVALID_CREDENTIALS') {
+        res.status(401).json({ message: 'Invalid credentials' });
+      } else {
+        res.status(500).send('Error saving the user');
+      }
+    });
+};

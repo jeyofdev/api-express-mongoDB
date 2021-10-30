@@ -1,6 +1,11 @@
 import argon2 from 'argon2';
+import jwt from 'jsonwebtoken';
 import dotenv from 'dotenv';
-import { HashPasswordType } from '../@types/types';
+import {
+  CalculateTokenType,
+  HashPasswordType,
+  VerifyPasswordType,
+} from '../@types/types';
 
 dotenv.config();
 
@@ -17,7 +22,19 @@ const hashOptions = {
 /**
  * hash a password
  */
-const hashPassword: HashPasswordType = (plainPassword) =>
+export const hashPassword: HashPasswordType = (plainPassword) =>
   argon2.hash(plainPassword, hashOptions);
 
-export default hashPassword;
+/**
+ * Check that a password matches a hash password
+ */
+export const verifyPassword: VerifyPasswordType = (
+  plainPassword,
+  hashPassword // eslint-disable-line @typescript-eslint/no-shadow
+) => argon2.verify(hashPassword, plainPassword, hashOptions);
+
+/**
+ * Allows you to login a user
+ */
+export const calculateToken: CalculateTokenType = (userEmail = '', userId) =>
+  jwt.sign({ email: userEmail, id: userId }, `${process.env.PRIVATE_KEY}`);

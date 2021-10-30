@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import Joi from 'joi';
-import jwt from 'jsonwebtoken';
 
 export type RouteCallbackType = (
   req: Request,
@@ -30,3 +29,13 @@ export type ValidationType = (
 ) => Joi.ValidationError | undefined;
 
 export type HashPasswordType = (plainPassword: string) => Promise<string>;
+
+export type VerifyPasswordType = (
+  plainPassword: string,
+  hashPassword: string
+) => Promise<boolean>;
+
+export type CalculateTokenType = (
+  userEmail: string | undefined,
+  userId: any
+) => never | string;

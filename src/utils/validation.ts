@@ -19,6 +19,7 @@ export const userValidation: ValidationType = (datas, forPost = true) => {
 
   return Joi.object({
     email: Joi.string().max(255).presence(presence),
+    username: Joi.string().max(50).presence(presence),
     password: Joi.string().max(255).presence(presence),
   }).validate(datas, { abortEarly: false }).error;
 };

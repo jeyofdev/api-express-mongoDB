@@ -1,15 +1,15 @@
-import { Request, Response } from 'express';
+import { RouteCallbackType, MovieType } from '../@types/types/index.js';
 import MovieModel from '../models/movie.model.js';
 
 /**
  * Post movie
  */
-export const saveMovies = async (req: Request, res: Response) => {
+export const saveMovies: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
     const newMovie = new MovieModel(req.body);
-    const result = await newMovie.save();
+    const result: MovieType = await newMovie.save();
 
     res.status(201).json({
       result,
@@ -24,11 +24,11 @@ export const saveMovies = async (req: Request, res: Response) => {
 /**
  * Get All movies
  */
-export const findAllMovies = async (req: Request, res: Response) => {
+export const findAllMovies: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
-    const movies = await MovieModel.find();
+    const movies: MovieType[] = await MovieModel.find();
 
     if (movies.length < 1) {
       return res.status(200).json({ message: 'No movie found !!!' });
@@ -45,12 +45,12 @@ export const findAllMovies = async (req: Request, res: Response) => {
 /**
  * Get movie by Id
  */
-export const findMovieById = async (req: Request, res: Response) => {
+export const findMovieById: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
     const { id } = req.params;
-    const movie = await MovieModel.findOne({ _id: id });
+    const movie: MovieType | null = await MovieModel.findOne({ _id: id });
 
     if (!movie) {
       return res.status(200).json({ message: 'No movie found !!!' });
@@ -67,12 +67,15 @@ export const findMovieById = async (req: Request, res: Response) => {
 /**
  * Update movie by Id
  */
-export const updateMovieById = async (req: Request, res: Response) => {
+export const updateMovieById: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
     const { id } = req.params;
-    const movie = await MovieModel.findOne({ _id: id }, req.body);
+    const movie: MovieType | null = await MovieModel.findOne(
+      { _id: id },
+      req.body
+    );
 
     if (!movie) {
       return res.status(200).json({ message: 'No movie found !!!' });
@@ -89,12 +92,12 @@ export const updateMovieById = async (req: Request, res: Response) => {
 /**
  * Delete movie by Id
  */
-export const deleteMovieById = async (req: Request, res: Response) => {
+export const deleteMovieById: RouteCallbackType = async (req, res) => {
   await MovieModel.init();
 
   try {
     const { id } = req.params;
-    const movie = await MovieModel.findByIdAndDelete(id);
+    const movie: MovieType | null = await MovieModel.findByIdAndDelete(id);
 
     if (!movie) {
       return res.status(200).json({ message: 'No movie found !!!' });

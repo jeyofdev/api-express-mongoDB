@@ -1,7 +1,8 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import routes from './routes/index.js';
+import { notFound, root } from './controllers/default.controller.js';
 
 dotenv.config();
 
@@ -19,15 +20,9 @@ mongoose
   .then(() => console.log('Connected to database MongoDB'))
   .catch((err) => console.log(err));
 
-// Routes
-app.get('/', (_: Request, res: Response) => {
-  res.status(200).json({ message: 'Welcome to the API' });
-});
-
-// Route 404
-app.use((_: Request, res: Response) => {
-  res.status(404).send({ error: 'Route not found' });
-});
+// Default routes
+app.get('/', root);
+app.use(notFound);
 
 // Listen
 app.listen(PORT, () => {

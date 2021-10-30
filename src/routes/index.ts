@@ -1,12 +1,11 @@
-import express, { Request, Response } from 'express';
+import express from 'express';
+import { homeApi } from '../controllers/default.controller.js';
 import moviesRoute from './movies.route.js';
 
 const router = express.Router();
 
 router.use('/movies', moviesRoute);
 
-router.get('/', (_: Request, res: Response) => {
-  res.status(200).json({ message: 'API home' });
-});
+router.get('/', homeApi);
 
 export default router;

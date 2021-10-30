@@ -8,6 +8,8 @@ Create a basic api with express, mongoDb, mongoose and JWT
 - ![Express.js](https://img.shields.io/badge/EXPRESS.JS-black?style=plastic&logo=express)
 - ![MongoDB](https://img.shields.io/badge/MongoDB-black?style=plastic&logo=mongodb)
 - ![JWT](https://img.shields.io/badge/JWT-black?style=plastic&logo=JSON%20web%20tokens)
+- ![EsLint](https://img.shields.io/badge/ESLint-black?style=plastic&logo=eslint)
+- ![TypeScript](https://img.shields.io/badge/typescript-black?style=plastic&logo=typescript)
 
 ## Getting starting
 

@@ -1,6 +1,6 @@
 import { RouteCallbackType, MovieType } from '../@types/types/index.js';
 import MovieModel from '../models/movie.model.js';
-import movieValidation from '../utils/validation.js';
+import { movieValidation } from '../utils/validation.js';
 
 /**
  * Post movie

@@ -1,7 +1,7 @@
 import Joi, { PresenceMode } from 'joi';
 import { ValidationType } from '../@types/types';
 
-const movieValidation: ValidationType = (datas, forPost = true) => {
+export const movieValidation: ValidationType = (datas, forPost = true) => {
   const presence: PresenceMode = forPost ? 'required' : 'optional';
 
   return Joi.object({
@@ -14,4 +14,11 @@ const movieValidation: ValidationType = (datas, forPost = true) => {
   }).validate(datas, { abortEarly: false }).error;
 };
 
-export default movieValidation;
+export const userValidation: ValidationType = (datas, forPost = true) => {
+  const presence: PresenceMode = forPost ? 'required' : 'optional';
+
+  return Joi.object({
+    email: Joi.string().max(255).presence(presence),
+    password: Joi.string().max(255).presence(presence),
+  }).validate(datas, { abortEarly: false }).error;
+};
